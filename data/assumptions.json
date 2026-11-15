@@ -1,0 +1,40 @@
+{
+  "_meta": {
+    "notice": "הנחות חישוב גלויות. אינן נתונים ואינן תחזית מובטחת. ערכים המסומנים pending_approval טרם אושרו על ידי צוות הפרויקט."
+  },
+  "values_basis": "real",
+  "values_basis_note": "כל הסכומים בערכים ריאליים (שקלים של היום): התשואות הן תשואות ריאליות, והשכר אינו צמוד לאינפלציה בנפרד.",
+  "contribution_rate": {
+    "value": 0.185,
+    "status": "pending_approval",
+    "note": "שיעור הפקדה כולל (עובד + מעביד + פיצויים) מתוך השכר ברוטו. 18.5% הוא המינימום לפי צו ההרחבה לשכירים. לא נמסר באפיון; יש לאשר."
+  },
+  "salary_growth_real_annual": {
+    "value": 0.0,
+    "status": "pending_approval",
+    "note": "צמיחת שכר ריאלית שנתית. 0% = שכר קבוע בערכים ריאליים."
+  },
+  "scenarios": {
+    "status": "pending_approval",
+    "note": "תשואה ריאלית שנתית נטו לפני דמי ניהול מהצבירה. תשואות היסטוריות מפנסיה-נט מוצגות כהקשר בלבד ואינן בסיס להבטחה.",
+    "conservative": { "label": "שמרני", "annual_real_return": 0.02 },
+    "central": { "label": "מרכזי", "annual_real_return": 0.035 },
+    "optimistic": { "label": "אופטימי", "annual_real_return": 0.05 }
+  },
+  "materiality_threshold_first_year_ils": {
+    "value": 200,
+    "status": "pending_approval",
+    "note": "מתחת לחיסכון שנתי משוער זה בשנה הראשונה, הממצא מוצג כ'לא נמצא פער משמעותי'."
+  },
+  "market_data_max_age_months": {
+    "value": 4,
+    "status": "pending_approval",
+    "note": "נתוני שוק שתקופת הדיווח האחרונה שלהם ישנה יותר ממספר חודשים זה מסומנים כלא מעודכנים (רמת ודאות 3)."
+  },
+  "legal_fee_caps_pct": {
+    "deposit": 6.0,
+    "accumulation": 0.5,
+    "status": "needs_official_source",
+    "note": "תקרות דמי ניהול בקרן פנסיה חדשה מקיפה. משמשות לוולידציה בלבד. יש לאמת מול מקור רשמי של רשות שוק ההון ולתעד קישור."
+  }
+}

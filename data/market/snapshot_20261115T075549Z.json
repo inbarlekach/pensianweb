@@ -1,0 +1,243 @@
+{
+  "snapshot_id": "20261115T075549Z",
+  "source_id": "pensianet_2024_now",
+  "collected_at": "2026-11-15T07:55:47+00:00",
+  "resource_last_modified": "2026-11-15T05:00:34.182335",
+  "latest_report_period": 202609,
+  "total_rows": 9309,
+  "in_scope_rows": 4993,
+  "coverage": {
+    "funds_found": 9,
+    "funds_comparable": 9,
+    "tracks_included": 152,
+    "rows_rejected": 19,
+    "note": "הכיסוי מחושב מתוך מה שהתקבל מהמקור בלבד. אין טענה לכיסוי מלא של השוק."
+  },
+  "funds": [
+    {
+      "parent_company": "אינפיניטי פנסיה מקיפה",
+      "report_period": 202609,
+      "deposit_fee_pct": 1.0,
+      "accumulation_fee_pct": 0.18,
+      "track_count": 10,
+      "total_assets_m": 2288.91,
+      "comparable": true,
+      "issues": []
+    },
+    {
+      "parent_company": "אלטשולר שחם פנסיה מקיפה",
+      "report_period": 202609,
+      "deposit_fee_pct": 1.24,
+      "accumulation_fee_pct": 0.15,
+      "track_count": 12,
+      "total_assets_m": 36065.46,
+      "comparable": true,
+      "issues": []
+    },
+    {
+      "parent_company": "הפניקס פנסיה מקיפה",
+      "report_period": 202609,
+      "deposit_fee_pct": 1.53,
+      "accumulation_fee_pct": 0.14,
+      "track_count": 17,
+      "total_assets_m": 152355.17,
+      "comparable": true,
+      "issues": []
+    },
+    {
+      "parent_company": "הראל פנסיה",
+      "report_period": 202609,
+      "deposit_fee_pct": 1.47,
+      "accumulation_fee_pct": 0.16,
+      "track_count": 22,
+      "total_assets_m": 213333.42,
+      "comparable": true,
+      "issues": []
+    },
+    {
+      "parent_company": "כלל פנסיה",
+      "report_period": 202609,
+      "deposit_fee_pct": 1.52,
+      "accumulation_fee_pct": 0.14,
+      "track_count": 20,
+      "total_assets_m": 189177.78,
+      "comparable": true,
+      "issues": []
+    },
+    {
+      "parent_company": "מגדל מקפת אישית",
+      "report_period": 202609,
+      "deposit_fee_pct": 1.56,
+      "accumulation_fee_pct": 0.14,
+      "track_count": 20,
+      "total_assets_m": 214446.62,
+      "comparable": true,
+      "issues": []
+    },
+    {
+      "parent_company": "מור פנסיה מקיפה",
+      "report_period": 202609,
+      "deposit_fee_pct": 1.05,
+      "accumulation_fee_pct": 0.19,
+      "track_count": 15,
+      "total_assets_m": 21982.77,
+      "comparable": true,
+      "issues": []
+    },
+    {
+      "parent_company": "מיטב פנסיה מקיפה",
+      "report_period": 202609,
+      "deposit_fee_pct": 1.25,
+      "accumulation_fee_pct": 0.11,
+      "track_count": 18,
+      "total_assets_m": 87553.5,
+      "comparable": true,
+      "issues": []
+    },
+    {
+      "parent_company": "מנורה מבטחים פנסיה",
+      "report_period": 202609,
+      "deposit_fee_pct": 1.73,
+      "accumulation_fee_pct": 0.15,
+      "track_count": 18,
+      "total_assets_m": 327712.36,
+      "comparable": true,
+      "issues": []
+    }
+  ],
+  "rejected": [
+    {
+      "fund_id": 1560,
+      "fund_name": "מיטב פנסיה מקיפה פאסיבי- מדדי אג\"ח עד 25% במדדי מניות",
+      "parent_company": "מיטב פנסיה מקיפה",
+      "report_period": 202406,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 2012,
+      "fund_name": "מנורה מבטחים פנסיה - מסלול יעד לפרישה 2025",
+      "parent_company": "מנורה מבטחים פנסיה",
+      "report_period": 202512,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 2014,
+      "fund_name": "מנורה מבטחים פנסיה - מסלול יעד לפרישה 2035",
+      "parent_company": "מנורה מבטחים פנסיה",
+      "report_period": 202606,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 2016,
+      "fund_name": "מנורה מבטחים פנסיה - מסלול יעד לפרישה 2045",
+      "parent_company": "מנורה מבטחים פנסיה",
+      "report_period": 202606,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 2064,
+      "fund_name": "מנורה מבטחים פנסיה - מסלול אג\"ח",
+      "parent_company": "מנורה מבטחים פנסיה",
+      "report_period": 202406,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 2183,
+      "fund_name": "מנורה מבטחים פנסיה - מסלול יעד לפרישה 2050",
+      "parent_company": "מנורה מבטחים פנסיה",
+      "report_period": 202606,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 2242,
+      "fund_name": "מיטב מקיפה אג\"ח עד 25% במנית",
+      "parent_company": "מיטב פנסיה מקיפה",
+      "report_period": 202406,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 8484,
+      "fund_name": "כלל פנסיה מסלול אג\"ח עד 15% מניות",
+      "parent_company": "כלל פנסיה",
+      "report_period": 202406,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 8812,
+      "fund_name": "מנורה מבטחים פנסיה - מסלול יעד לפרישה 2060",
+      "parent_company": "מנורה מבטחים פנסיה",
+      "report_period": 202606,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 9980,
+      "fund_name": "הפניקס מסלול אג\"ח עד 25% מניות",
+      "parent_company": "הפניקס פנסיה מקיפה",
+      "report_period": 202406,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 12116,
+      "fund_name": "הפניקס פנסיה מקיפה מסלול פאסיבי לבני 50 ומטה",
+      "parent_company": "הפניקס פנסיה מקיפה",
+      "report_period": 202406,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 12117,
+      "fund_name": "הפניקס פנסיה מקיפה מסלול פאסיבי לבני 50 עד 60",
+      "parent_company": "הפניקס פנסיה מקיפה",
+      "report_period": 202406,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 12118,
+      "fund_name": "הפניקס פנסיה מקיפה מסלול פאסיבי לבני  60 ומעלה",
+      "parent_company": "הפניקס פנסיה מקיפה",
+      "report_period": 202406,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 12148,
+      "fund_name": "מגדל מקפת אישית אג\"ח למקבלי קצבה",
+      "parent_company": "מגדל מקפת אישית",
+      "report_period": 202406,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 13303,
+      "fund_name": "מנורה מבטחים פנסיה יעד לפרישה 2065",
+      "parent_company": "מנורה מבטחים פנסיה",
+      "report_period": 202606,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 13917,
+      "fund_name": "מור פנסיה מקיפה - אג\"ח עד 25% מניות",
+      "parent_company": "מור פנסיה מקיפה",
+      "report_period": 202406,
+      "reason": "המסלול לא דווח בתקופה האחרונה (202609)"
+    },
+    {
+      "fund_id": 15840,
+      "fund_name": "אלטשולר שחם פנסיה מקיפה עוקב מדדים למקבלי קצבה",
+      "parent_company": "אלטשולר שחם פנסיה מקיפה",
+      "report_period": 202609,
+      "reason": "דמי ניהול חסרים במקור"
+    },
+    {
+      "fund_id": 15841,
+      "fund_name": "אלטשולר שחם פנסיה מקיפה מניות סחיר",
+      "parent_company": "אלטשולר שחם פנסיה מקיפה",
+      "report_period": 202609,
+      "reason": "דמי ניהול חסרים במקור"
+    },
+    {
+      "fund_id": 15892,
+      "fund_name": "מור פנסיה מקיפה הלכה",
+      "parent_company": "מור פנסיה מקיפה",
+      "report_period": 202609,
+      "reason": "דמי ניהול חסרים במקור"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "_meta": {
+    "kind": "demo_profile",
+    "notice": "פרופיל פיקטיבי לצורכי הדגמה בלבד. אינו מייצג אדם אמיתי ואינו מייצג חוסך ממוצע בישראל. הנתונים לא נשלפו מאף מאגר או קרן פנסיה."
+  },
+  "name": "עידו",
+  "reason": "שכיר בן 38 שרוצה לדעת אם הוא משלם יותר מדי דמי ניהול",
+  "age": 38,
+  "gross_monthly_salary": 18000,
+  "accumulated_balance": 420000,
+  "accumulation_fee_pct": 0.30,
+  "deposit_fee_pct": 2.00,
+  "marital_status": "נשוי",
+  "spouse_age": 36,
+  "children": 2,
+  "planned_retirement_age": 67,
+  "current_fund": null,
+  "current_fund_note": "לא הוגדרה קרן נוכחית בפרופיל. המערכת אינה משייכת את עידו לקרן מסוימת.",
+  "insurance": {
+    "status": "not_defined",
+    "note": "פרטי הכיסוי הביטוחי טרם הוגדרו (מתוכנן להתבסס על תקנון מנורה מבטחים פנסיה מקיפה בשלב הבא). מוצג כרקע בלבד ואינו מנותח בגרסה זו."
+  }
+}

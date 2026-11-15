@@ -1,0 +1,58 @@
+{
+  "current_snapshot": "snapshot_20261115T075549Z.json",
+  "history": [
+    {
+      "at": "2026-11-15T07:55:47+00:00",
+      "source_id": "pensianet_2024_now",
+      "status": "success",
+      "snapshot": "snapshot_20261115T075549Z.json"
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "pensianet_2024_now",
+      "name": "פנסיה-נט: נתוני קרנות פנסיה לשנים 2024–היום",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון (באמצעות data.gov.il)",
+      "url": "https://data.gov.il/dataset/pensia-net",
+      "api": "https://data.gov.il/api/3/action/datastore_search?resource_id=6d47d6b5-cb08-488b-b333-f1e717b1e1bd",
+      "data_type": "נתונים חודשיים לכל מסלול: דמי ניהול ממוצעים שנגבו בפועל, נכסים, תשואות",
+      "collected_at": "2026-11-15T07:55:47+00:00",
+      "published_or_updated": "2026-11-15T05:00:34.182335",
+      "verification_status": "verified",
+      "known_limitations": [
+        "דמי הניהול הם ממוצע שנגבה בפועל מכלל העמיתים בקרן, ולא הצעה לחוסך מסוים.",
+        "יחידות שדות דמי הניהול פורשו כאחוזים לפי טווח הערכים; המקור לא מציין יחידות במפורש.",
+        "הנתונים מתפרסמים בפיגור של כחודשיים."
+      ],
+      "coverage": "9 קרנות מקיפות ברות-השוואה, תקופה 202609"
+    },
+    {
+      "source_id": "cma_fee_calculator",
+      "name": "מחשבון דמי ניהול של רשות שוק ההון",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+      "url": "https://nihul.cma.gov.il/",
+      "data_type": "דמי ניהול מוצעים לפי מאפייני חוסך",
+      "verification_status": "not_checked",
+      "known_limitations": [
+        "האתר חסם גישה אוטומטית (HTTP 403) ולא נבדק ידנית. לא נעשה בו שימוש בדמו."
+      ]
+    },
+    {
+      "source_id": "pensyanet_portal",
+      "name": "פורטל פנסיה-נט",
+      "publisher": "רשות שוק ההון, ביטוח וחיסכון",
+      "url": "https://pensyanet.cma.gov.il/Parameters/Index",
+      "data_type": "ממשק צפייה בנתוני קרנות",
+      "verification_status": "not_checked",
+      "known_limitations": [
+        "החיבור נותק בניסיון הגישה. הנתונים נלקחו במקום זאת ממאגר data.gov.il."
+      ]
+    }
+  ],
+  "last_attempt": {
+    "at": "2026-11-15T07:55:47+00:00",
+    "source_id": "pensianet_2024_now",
+    "status": "success",
+    "snapshot": "snapshot_20261115T075549Z.json"
+  }
+}

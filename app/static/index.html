@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>בודק דמי ניהול – אבטיפוס</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block">
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <header class="appbar">
+    <div class="appbar-in">
+      <div class="brand">
+        <span class="brand-mark ms" aria-hidden="true">account_balance</span>
+        <div>
+          <div class="brand-name">בודק דמי ניהול</div>
+          <div class="brand-sub" id="appbar-sub">כניסה</div>
+        </div>
+      </div>
+      <span class="pill pill-proto">אבטיפוס לימודי</span>
+    </div>
+  </header>
+
+  <main class="shell">
+    <!-- ================= 1. כניסה ================= -->
+    <section id="screen-entry" class="screen">
+      <div class="hero">
+        <span class="pill pill-sky"><span class="ms sm" aria-hidden="true">school</span> פרויקט אוניברסיטאי</span>
+        <h1>האם אתה משלם יותר מדי דמי ניהול בפנסיה?</h1>
+        <p class="lead">אבטיפוס שמשווה דמי ניהול בקרן פנסיה לממוצעים שנגבו בפועל בקרנות הפנסיה המקיפות בישראל, ומחשב בקוד את ההשפעה האפשרית עד הפרישה.</p>
+      </div>
+
+      <div class="card card-danger">
+        <span class="icon-bubble danger ms" aria-hidden="true">gpp_maybe</span>
+        <div>
+          <h3>הבהרה: אבטיפוס לימודי, לא ייעוץ</h3>
+          <p>זהו אבטיפוס של פרויקט אוניברסיטאי. אין לראות במידע או בממצאים ייעוץ פנסיוני אישי. המערכת אינה מחוברת לחשבונות פנסיה אמיתיים ואינה מבצעת פעולות בשם המשתמש. <b>אין להזין נתונים אישיים או פיננסיים אמיתיים.</b></p>
+        </div>
+      </div>
+
+      <div class="card chat-card">
+        <div class="card-head">
+          <span class="icon-bubble sky ms" aria-hidden="true">forum</span>
+          <div class="grow">
+            <h2>בניית פרופיל בשיחה</h2>
+            <div class="sub">עונים על כמה שאלות, והפרופיל משמש לכל המסכים הבאים</div>
+          </div>
+          <span class="pill pill-amber" title="השיחה מתנהלת לפי תסריט קבוע בקוד. עדיין לא חובר מודל AI.">תסריט – לא מודל AI</span>
+        </div>
+        <div class="chat-log" id="chat-log" aria-live="polite"></div>
+        <div class="chips" id="chat-quick"></div>
+        <form class="chat-input" id="chat-form" autocomplete="off">
+          <input id="chat-text" type="text" placeholder="כתוב/י תשובה…" aria-label="תשובה לשאלה">
+          <button class="btn btn-primary" type="submit" aria-label="שליחה"><span class="ms flip" aria-hidden="true">send</span></button>
+        </form>
+        <p class="fine">התשובות נשמרות רק בלשונית הזו בדפדפן (sessionStorage), ולא נשלחות לשמירה בשרת.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="icon-bubble ms" aria-hidden="true">hub</span>
+          <div class="grow">
+            <h2>או: חיבור מדומה לפרופיל ההדגמה</h2>
+            <div class="sub">טעינת הפרופיל הפיקטיבי של עידו, במקום השיחה</div>
+          </div>
+          <span class="pill pill-neutral">הדמיה</span>
+        </div>
+
+        <div class="tile">
+          <span class="icon-bubble ms" aria-hidden="true">badge</span>
+          <div class="grow">
+            <div class="label">פרופיל הדגמה</div>
+            <div class="tile-title">עידו | שכיר, בן 38</div>
+            <div class="sub">נשוי + 2 ילדים · פרופיל פיקטיבי</div>
+          </div>
+        </div>
+
+        <div class="label mt">סטטוס מקורות מידע</div>
+        <ul class="statuslist" id="entry-status">
+          <li data-k="profile"><span class="ms st" aria-hidden="true">radio_button_unchecked</span><span class="grow">טעינת פרופיל ההדגמה</span><span class="pill pill-neutral">ממתין</span></li>
+          <li data-k="market"><span class="ms st" aria-hidden="true">radio_button_unchecked</span><span class="grow" id="entry-market-text">נתוני שוק: פנסיה-נט (רשות שוק ההון)</span><span class="pill pill-neutral">ממתין</span></li>
+        </ul>
+
+        <button class="btn btn-primary btn-block" id="btn-connect"><span class="ms" aria-hidden="true">sync</span> טען נתוני הדגמה (חיבור מדומה)</button>
+        <p class="fine">לא מתבצעת פנייה למסלקה הפנסיונית או לקרן פנסיה. נתוני השוק נקראים מהמאגר המקומי שנאסף מ-data.gov.il.</p>
+      </div>
+
+      <div class="section-head"><h2>איך זה עובד</h2></div>
+      <div class="feature"><span class="icon-bubble ms" aria-hidden="true">query_stats</span><div><h3>השוואה לנתוני שוק אמיתיים</h3><p>דמי הניהול מושווים לממוצעים שנגבו בפועל בקרנות המקיפות, לפי מאגר פנסיה-נט של רשות שוק ההון.</p></div></div>
+      <div class="feature"><span class="icon-bubble ms" aria-hidden="true">terminal</span><div><h3>חישוב דטרמיניסטי בקוד</h3><p>כל הסכומים מחושבים בקוד עם נוסחאות גלויות ונבדקות. מודל שפה אינו מחשב סכומים.</p></div></div>
+      <div class="feature"><span class="icon-bubble emerald ms" aria-hidden="true">visibility</span><div><h3>הפרדה ושקיפות</h3><p>הבחנה ברורה בין עובדות, הערכות לפי הנחות וניסוח. לכל ממצא יש מקור, רמת ודאות ורמת סיכון.</p></div></div>
+
+      <div class="card card-soft" id="entry-next" hidden>
+        <h2 id="entry-next-title">הפרופיל מוכן</h2>
+        <p class="sub" id="entry-next-text"></p>
+        <button class="btn btn-ghost btn-block" data-goto="profile"><span class="ms" aria-hidden="true">account_box</span> צפה בפרופיל</button>
+      </div>
+    </section>
+
+    <!-- ================= 2. פרופיל ================= -->
+    <section id="screen-profile" class="screen" hidden>
+      <div class="card">
+        <div class="card-head">
+          <span class="icon-bubble lg ms" aria-hidden="true">badge</span>
+          <div class="grow">
+            <div class="row gap"><h1 class="h-name" id="p-name"></h1><span class="pill pill-emerald">שכיר</span></div>
+            <div class="sub" id="p-family"></div>
+          </div>
+          <div class="ret">
+            <div class="label">פרישה מתוכננת</div>
+            <div class="ret-age" id="p-ret"></div>
+            <div class="ret-in" id="p-ret-in"></div>
+          </div>
+        </div>
+        <div class="tile tile-col">
+          <div class="row between"><span class="sub">שכר חודשי ברוטו</span><span class="num xl" id="p-salary"></span></div>
+          <div class="note"><span class="ms sky" aria-hidden="true">help</span><div><b>סיבת הפנייה:</b> <span id="p-reason"></span></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="icon-bubble ms" aria-hidden="true">account_balance</span>
+          <h2 class="grow">נתוני הפנסיה הקיימת</h2>
+          <span class="pill pill-proto" id="p-source"></span>
+        </div>
+        <div class="alert alert-warn" id="p-errors" hidden></div>
+        <div class="tile">
+          <div class="grow"><div class="sub">חיסכון פנסיוני שנצבר</div><div class="num xxl" id="p-balance"></div></div>
+          <span class="icon-bubble lg ms" aria-hidden="true">savings</span>
+        </div>
+        <div class="tile tile-white tile-col">
+          <div class="row between"><span class="sub">הפקדה חודשית משוערת</span><span class="pill pill-amber xs">הנחה</span></div>
+          <div>כ-<span class="num lg" id="p-deposit"></span> <span class="sub">לחודש</span></div>
+          <div class="sub small" id="p-deposit-note"></div>
+        </div>
+        <div class="grid2">
+          <div class="tile tile-col">
+            <div class="label"><span class="ms sm" aria-hidden="true">percent</span> <abbr class="term" title="אחוז שנתי שהקרן גובה מכל הכסף שכבר נצבר בחשבון.">דמי ניהול מצבירה</abbr></div>
+            <div><span class="num xl" id="p-acc"></span> <span class="sub">לשנה</span></div>
+          </div>
+          <div class="tile tile-col">
+            <div class="label"><span class="ms sm" aria-hidden="true">trending_up</span> <abbr class="term" title="אחוז שהקרן גובה מכל הפקדה חודשית, לפני שהכסף נכנס לחיסכון.">דמי ניהול מהפקדות</abbr></div>
+            <div><span class="num xl" id="p-dep"></span> <span class="sub">מכל הפקדה</span></div>
+          </div>
+        </div>
+        <p class="fine">קרן נוכחית: לא הוגדרה בפרופיל. המערכת אינה משייכת את עידו לקרן מסוימת.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="icon-bubble ms" aria-hidden="true">shield</span>
+          <h2 class="grow">כיסוי ביטוחי קיים</h2>
+          <span class="pill pill-sky">רקע – השלב הבא</span>
+        </div>
+        <div class="note"><span class="ms" aria-hidden="true">info</span><div id="p-insurance"></div></div>
+      </div>
+
+      <div class="card card-ai">
+        <div class="card-head">
+          <span class="icon-bubble sky ms" aria-hidden="true">psychology</span>
+          <div class="grow"><h2>מנוע הניתוח</h2><div class="sub">השוואה לשוק, חישוב בקוד, ניסוח ואימות</div></div>
+        </div>
+        <button class="btn btn-ai btn-block" id="btn-analyze"><span class="ms" aria-hidden="true">bolt</span> נתח את המצב הפנסיוני שלי</button>
+        <div class="label mt">שלבי התהליך</div>
+        <ul class="steps" id="steps"></ul>
+        <div class="alert alert-error" id="analyze-error" hidden></div>
+        <button class="btn btn-primary btn-block" id="btn-to-results" hidden data-goto="results">מעבר לדוח התוצאות וההמלצות <span class="ms" aria-hidden="true">arrow_back</span></button>
+      </div>
+    </section>
+
+    <!-- ================= 3. תוצאות ================= -->
+    <section id="screen-results" class="screen" hidden>
+      <div id="results-empty" class="card"><p class="sub">עדיין לא בוצע ניתוח. עבור לפרופיל ולחץ על "נתח את המצב הפנסיוני שלי".</p></div>
+      <div id="results"></div>
+    </section>
+
+    <!-- ================= 4. שאלון ================= -->
+    <section id="screen-survey" class="screen" hidden>
+      <div class="card card-soft">
+        <div class="card-head">
+          <span class="icon-bubble emerald lg ms" aria-hidden="true">fact_check</span>
+          <div class="grow">
+            <span class="pill pill-emerald">מדדי הצלחה – הדמיה</span>
+            <h1 class="h-section">שאלון משוב על הדוח</h1>
+          </div>
+        </div>
+        <p class="sub">בגרסה החיה המשתמשים ימלאו את השאלון אחרי קבלת הדוח. בדמו הזה התשובות הן תשובות לדוגמה של עידו, המשתמש הפיקטיבי. הן <b>אינן</b> תוצאות מדידה אמיתיות, ושום תשובה לא נשמרת.</p>
+      </div>
+      <form id="survey-form" class="survey"></form>
+    </section>
+  </main>
+
+  <nav class="bottomnav" aria-label="ניווט ראשי">
+    <button data-goto="entry" class="on"><span class="ms" aria-hidden="true">login</span><span>כניסה</span></button>
+    <button data-goto="profile" disabled><span class="ms" aria-hidden="true">account_circle</span><span>פרופיל</span></button>
+    <button data-goto="results" disabled><span class="ms" aria-hidden="true">analytics</span><span>תוצאות וניתוח</span></button>
+    <button data-goto="survey" disabled><span class="ms" aria-hidden="true">rate_review</span><span>שאלון משוב</span></button>
+  </nav>
+</body>
+</html>
