@@ -106,7 +106,14 @@
     <section id="screen-profile" class="screen" hidden>
       <div class="card">
         <div class="card-head">
-          <span class="icon-bubble lg ms" aria-hidden="true">badge</span>
+          <div class="avatar-wrap">
+            <button type="button" class="avatar" id="avatar-btn" aria-label="העלאת תמונה אישית">
+              <img id="avatar-img" alt="התמונה האישית שלי" hidden>
+              <span class="ms avatar-ph" id="avatar-ph" aria-hidden="true">add_a_photo</span>
+            </button>
+            <input type="file" id="avatar-file" accept="image/*" hidden>
+            <button type="button" class="avatar-remove" id="avatar-remove" aria-label="הסרת התמונה" hidden><span class="ms" aria-hidden="true">close</span></button>
+          </div>
           <div class="grow">
             <div class="row gap"><h1 class="h-name" id="p-name"></h1><span class="pill pill-emerald">שכיר</span></div>
             <div class="sub" id="p-family"></div>
