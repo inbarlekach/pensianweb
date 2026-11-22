@@ -732,6 +732,11 @@ document.addEventListener("DOMContentLoaded", () => {
   bindChat();
   bindSheet();
   $("#btn-connect").addEventListener("click", connect);
+  $("#how-toggle").addEventListener("click", (e) => {
+    const open = $("#how-body").hidden;
+    $("#how-body").hidden = !open;
+    e.currentTarget.setAttribute("aria-expanded", String(open));
+  });
   $("#btn-analyze").addEventListener("click", analyze);
   initAvatar();
   go("entry");
