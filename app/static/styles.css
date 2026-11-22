@@ -84,6 +84,8 @@
 :root[data-theme="dark"] .scen-panel { background: var(--tile); }
 :root[data-theme="dark"] .btn-ai { background: #0369a1; }
 :root[data-theme="dark"] .scale input:checked + span { color: #04231a; }
+:root[data-theme="dark"] .avatar { color: var(--sky-ink); }
+:root[data-theme="dark"] .avatar:not(:has(img:not([hidden]))) { border-color: var(--sky-line); }
 :root[data-theme="dark"] .btn:focus-visible,
 :root[data-theme="dark"] .chip:focus-visible { outline-color: #38bdf8; }
 
