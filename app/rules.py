@@ -154,8 +154,20 @@ def build(profile: Profile, assumptions: dict, snapshot: dict, mstatus: dict,
     # Median fund by computed total cost for this profile (a real fund, not a synthetic mix).
     med = alts[len(alts) // 2]
     out.median = med
-    above_all = all(a.comparison.by_name("central").gap_at_retirement > 0 for a in alts)
+    cheaper = sum(1 for a in alts if a.comparison.by_name("central").gap_at_retirement > 0)
+    above_all = cheaper == len(alts)
+    # Plain-language verdict level, decided by code from the computed total cost for this profile.
+    if above_all:
+        verdict = "higher_than_all"
+    elif cheaper * 2 >= len(alts):
+        verdict = "higher_than_most"
+    elif cheaper > 0:
+        verdict = "mixed"
+    else:
+        verdict = "lower"
     out.market_context = {
+        "verdict": verdict,
+        "funds_cheaper_than_you": cheaper,
         "funds_compared": len(alts),
         "deposit_fee_median": statistics.median(f["deposit_fee_pct"] for f in funds),
         "accumulation_fee_median": statistics.median(f["accumulation_fee_pct"] for f in funds),
@@ -167,6 +179,22 @@ def build(profile: Profile, assumptions: dict, snapshot: dict, mstatus: dict,
     add(CalcResult(calc_id="monthly_deposit", label="הפקדה חודשית משוערת",
                    value=_r(alts[0].comparison.monthly_deposit, 2), unit="ILS", kind="estimate",
                    formula=f"שכר ברוטו × {rate}"))
+    c0 = alts[0].comparison
+    y1_formula = "סימולציה חודשית של 12 החודשים הקרובים, תרחיש מרכזי, בתנאים הנוכחיים"
+    add(CalcResult(calc_id="cur_y1_dep_fees", label="דמי ניהול מההפקדות בשנה הקרובה (נוכחי)",
+                   value=_r(c0.first_year_current_deposit_fees), unit="ILS", kind="estimate", formula=y1_formula))
+    add(CalcResult(calc_id="cur_y1_acc_fees", label="דמי ניהול מהצבירה בשנה הקרובה (נוכחי)",
+                   value=_r(c0.first_year_current_accumulation_fees), unit="ILS", kind="estimate", formula=y1_formula))
+    add(CalcResult(calc_id="cur_y1_total_fees", label="סך דמי הניהול בשנה הקרובה (נוכחי)",
+                   value=_r(c0.first_year_current_deposit_fees) + _r(c0.first_year_current_accumulation_fees),
+                   unit="ILS", kind="estimate",
+                   formula="דמי ניהול מההפקדות + דמי ניהול מהצבירה (מעוגלים לשקל, כך שהסכום תואם את הרכיבים שמוצגים)"))
+    add(CalcResult(calc_id="cur_dep_per_1000", label="דמי ניהול מכל 1,000 ₪ שמופקדים",
+                   value=round(profile.deposit_fee_pct * 10, 2), unit="ILS", kind="fact",
+                   formula="אחוז דמי הניהול מההפקדות × 1,000"))
+    add(CalcResult(calc_id="cur_acc_per_100k", label="דמי ניהול בשנה מכל 100,000 ₪ צבירה",
+                   value=round(profile.accumulation_fee_pct * 1000, 2), unit="ILS", kind="fact",
+                   formula="אחוז דמי הניהול מהצבירה × 100,000"))
 
     def register(a: Alternative, prefix: str):
         f = a.fund
