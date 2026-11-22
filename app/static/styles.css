@@ -327,3 +327,14 @@ dl.gloss dd { margin: 2px 0 0; color: var(--ink-2); font-size: 14px; }
   .bar-row { grid-template-columns: 7.5em 1fr 3.4em; }
   .num.xxl { font-size: 30px; }
 }
+
+/* avatar */
+.avatar-wrap { position: relative; width: 72px; height: 72px; flex: none; }
+.avatar { width: 72px; height: 72px; border-radius: 50%; border: 2px dashed var(--navy); background: var(--tile-2); color: var(--navy); display: grid; place-items: center; overflow: hidden; cursor: pointer; padding: 0; }
+.avatar:hover, .avatar:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.avatar img:not([hidden]) ~ .avatar-ph { display: none; }
+.avatar-ph { font-size: 30px; }
+.avatar:has(img:not([hidden])) { border-style: solid; border-color: transparent; }
+.avatar-remove { position: absolute; top: -4px; inset-inline-start: -4px; width: 24px; height: 24px; border-radius: 50%; border: 0; background: var(--danger); color: #fff; display: grid; place-items: center; cursor: pointer; padding: 0; }
+.avatar-remove .ms { font-size: 16px; }
