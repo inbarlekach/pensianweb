@@ -29,6 +29,8 @@ class Comparison:
     first_year_fee_saving: float
     first_year_deposit_fee_saving: float
     first_year_accumulation_fee_saving: float
+    first_year_current_deposit_fees: float       # what the user pays now, first 12 months
+    first_year_current_accumulation_fees: float
     scenarios: list[ScenarioComparison]
 
     def by_name(self, name: str) -> ScenarioComparison:
@@ -65,5 +67,7 @@ def compare(*, age: int, retirement_age: int, salary: float, balance: float,
         first_year_fee_saving=c1.total_fees - a1.total_fees,
         first_year_deposit_fee_saving=c1.total_deposit_fees - a1.total_deposit_fees,
         first_year_accumulation_fee_saving=c1.total_accumulation_fees - a1.total_accumulation_fees,
+        first_year_current_deposit_fees=c1.total_deposit_fees,
+        first_year_current_accumulation_fees=c1.total_accumulation_fees,
         scenarios=out,
     )

@@ -10,17 +10,36 @@ const dateHe = (iso) => (iso ? new Date(iso).toLocaleDateString("he-IL") : "—"
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const fmtCalc = (c) => (c.unit === "ILS" ? ils(c.value) : pct(c.value));
 
-const CERT = { 1: ["ודאות: מידע מאומת", "pill-emerald"], 2: ["ודאות: אינדיקציה – בדיקה נדרשת", "pill-amber"], 3: ["ודאות: אין די מידע", "pill-danger"] };
+const CERT = { 1: ["ודאות גבוהה", "pill-emerald"], 2: ["ודאות בינונית: כדאי לבדוק", "pill-amber"], 3: ["אין מספיק מידע", "pill-danger"] };
 const RISK = { low: ["סיכון נמוך", "pill-emerald"], high: ["סיכון גבוה יותר", "pill-amber"] };
 const SUB = { entry: "כניסה", profile: "פרופיל", results: "תוצאות וניתוח", survey: "שאלון משוב" };
-const GLOSSARY = [
-  ["דמי ניהול מהפקדות", "אחוז שהקרן גובה מכל הפקדה חודשית, לפני שהכסף נכנס לחיסכון. למשל, 2% מהפקדה של 1,000 ₪ הם 20 ₪."],
-  ["דמי ניהול מצבירה", "אחוז שנתי שהקרן גובה מכל הכסף שכבר נצבר. מכיוון שהצבירה גדלה עם השנים, השפעתו בטווח הארוך גדולה במיוחד."],
-  ["קרן פנסיה חדשה מקיפה", "המוצר העיקרי לחיסכון פנסיוני של שכירים בישראל. משלבת חיסכון לקצבה עם ביטוח לנכות ולשארים."],
-  ["ממוצע שנגבה בפועל", "דמי הניהול הממוצעים שהקרן גבתה מכלל העמיתים שלה. זה לא מחיר שמוצע לך. חוסכים שונים משלמים שיעורים שונים."],
-  ["תשואה ריאלית", "תשואה אחרי ניכוי אינפלציה. הסכומים מוצגים בכוח הקנייה של היום."],
-  ["פנסיה-נט", "מאגר נתונים ציבורי של רשות שוק ההון על קרנות הפנסיה: דמי ניהול ממוצעים, נכסים ותשואות."],
-];
+// Plain-language definitions. Opened from inline "?" terms and listed in the glossary window.
+const GLOSSARY = {
+  deposit_fee: { title: "דמי ניהול מהפקדות",
+    body: "כל חודש מופקד כסף לפנסיה שלך (חלק ממך וחלק מהמעסיק). הקרן לוקחת אחוז מכל הפקדה כזו, לפני שהכסף נכנס לחיסכון.",
+    example: "דוגמה: אם דמי הניהול מההפקדות הם 2%, אז מכל 1,000 ₪ שמופקדים, 20 ₪ הולכים לקרן ו-980 ₪ נכנסים לחיסכון." },
+  accumulation_fee: { title: "דמי ניהול מצבירה",
+    body: "\"צבירה\" היא כל הכסף שכבר נצבר בחשבון הפנסיה שלך. פעם בשנה הקרן לוקחת אחוז קטן מהסכום הזה. ככל שהחיסכון גדל, גם הסכום בשקלים גדל.",
+    example: "דוגמה: אם דמי הניהול מהצבירה הם 0.30% לשנה, אז מכל 100,000 ₪ בחשבון הקרן לוקחת 300 ₪ בשנה." },
+  pension_fund: { title: "קרן פנסיה",
+    body: "גוף שמנהל את הכסף שאתה ומעסיקך מפקידים לפנסיה, משקיע אותו, ובפרישה משלם לך קצבה חודשית. הקרן גובה על כך דמי ניהול." },
+  comprehensive_fund: { title: "קרן פנסיה חדשה מקיפה",
+    body: "סוג הקרן הנפוץ ביותר לשכירים בישראל. היא כוללת גם חיסכון לקצבה בפרישה וגם ביטוח למקרה של נכות או פטירה (לשאירים)." },
+  market_average: { title: "ממוצע שנגבה בפועל",
+    body: "כל קרן גובה דמי ניהול שונים מעמיתים שונים. \"הממוצע שנגבה\" הוא מה שהקרן גבתה בממוצע מכל העמיתים שלה. זה לא מחיר שהקרן הציעה לך אישית.",
+    example: "לכן אי אפשר לדעת מראש אם תקבל בדיוק את התנאים האלה. כדי לדעת, צריך לפנות לקרן ולבקש הצעה." },
+  real_return: { title: "הנחות החישוב ותשואה ריאלית",
+    body: "אף אחד לא יודע כמה הכסף ירוויח בשנים הבאות. לכן אנחנו מציגים שלושה תרחישים של תשואה (נמוך, בינוני, גבוה) כהנחות להמחשה. \"תשואה ריאלית\" היא התשואה אחרי ניכוי עליית המחירים, כך שהסכומים מוצגים בכוח הקנייה של היום." },
+  scenario: { title: "מה זה תרחיש?",
+    body: "תרחיש הוא \"מה היה קורה אם\". למשל, מה יהיה החיסכון בפרישה אם הכסף ירוויח בממוצע 2% בשנה (שמרני), 3.5% (מרכזי) או 5% (אופטימי). אלה הנחות להמחשה ולא תחזית." },
+  certainty: { title: "מה זה רמת ודאות?",
+    body: "רמת הוודאות אומרת עד כמה אפשר לסמוך על המספרים. \"ודאות בינונית\" אומרת שהממצא מבוסס על ממוצעים בשוק ולא על הצעה אישית מהקרן, ולכן זו סיבה לבדוק, ולא סיבה להחליט.",
+    example: "ודאות גבוהה תהיה רק כשיש נתונים מאומתים שמתאימים בדיוק לך, למשל הצעה בכתב מהקרן. בגרסה הזו אין כאלה." },
+  risk_level: { title: "מה זה רמת סיכון של פעולה?",
+    body: "זה לא סיכון בהשקעה. זה כמה אפשר להיפגע אם תעשה את הפעולה. לבקש מהקרן הנוכחית להוזיל דמי ניהול הוא סיכון נמוך: אין מה להפסיד. לעבור לקרן אחרת הוא סיכון גבוה יותר: זה עלול להשפיע על הביטוח ועל תנאים אחרים, ולכן כדאי לבדוק היטב ולהתייעץ עם יועץ פנסיוני מורשה." },
+  pensia_net: { title: "פנסיה-נט",
+    body: "מאגר ציבורי של רשות שוק ההון על קרנות הפנסיה בישראל: דמי ניהול ממוצעים, גודל הקרנות ותשואות. הנתונים בדמו נלקחו משם." },
+};
 const SURVEY_DEFAULTS = { q1: "new", q2: "4", q3: "yes", q3a: ["fund", "advisor"], q4: "4", q5: "רציתי לדעת מה הקרן הנוכחית שלי מציעה בפועל, ולא רק מה הממוצע." };
 
 const state = { profile: null, source: null, sources: null, result: null, chart: null, unlocked: new Set(["entry"]),
@@ -52,7 +71,6 @@ function go(name) {
   document.querySelectorAll(".bottomnav button").forEach((b) => b.classList.toggle("on", b.dataset.goto === name));
   $("#appbar-sub").textContent = SUB[name];
   window.scrollTo({ top: 0 });
-  if (name === "results" && state.result && state.chart === null) drawChart("central");
 }
 function unlock(name) {
   state.unlocked.add(name);
@@ -283,118 +301,227 @@ async function analyze() {
   $("#btn-to-results").hidden = false;
 }
 
-// ---------------- 3. results ----------------
-function renderResults() {
-  const res = state.result;
-  const c = res.calcs || {};
-  const m = res.market || {};
-  const p = state.profile;
-  const parts = [];
+// ---------------- 3. results: a short summary + detail windows ----------------
+// The summary shows only: the verdict, three numbers, and the first step. Everything else
+// opens in a window (bottom sheet on phones) so a reader is never shown everything at once.
+const term = (key, label) => `<button type="button" class="term" data-term="${key}">${esc(label)}</button>`;
 
-  // banners
-  if (res.generated_by === "template") {
-    parts.push(`<div class="alert alert-info"><span class="ms" aria-hidden="true">info</span><div>הטקסט המילולי בממצאים נוצר <b>מתבנית קבועה בקוד, לא על ידי מודל AI</b>. החישובים, רמות הוודאות והדירוג נקבעו בקוד.</div></div>`);
-  }
-  if (m.last_refresh_failed) parts.push(`<div class="alert alert-warn"><span class="ms" aria-hidden="true">warning</span><div>${esc((m.messages || []).join(" "))}</div></div>`);
+const sheet = { stack: [], current: null };
 
-  // hero
+function destroyChart() { if (state.chart) { state.chart.destroy(); state.chart = null; } }
+
+function paintSheet() {
+  const s = sheet.current;
+  destroyChart();
+  $("#sheet-title").textContent = s.title;
+  $("#sheet-body").innerHTML = s.html;
+  $("#sheet-back").hidden = !sheet.stack.length;
+  $("#sheet-body").scrollTop = 0;
+  if (s.onOpen) requestAnimationFrame(() => s.onOpen());
+}
+
+function openSheet(title, html, onOpen) {
+  const dlg = $("#sheet");
+  if (dlg.open && sheet.current) sheet.stack.push(sheet.current);
+  sheet.current = { title, html, onOpen };
+  paintSheet();
+  if (!dlg.open) dlg.showModal();
+}
+
+function bindSheet() {
+  const dlg = $("#sheet");
+  $("#sheet-close").addEventListener("click", () => dlg.close());
+  $("#sheet-back").addEventListener("click", () => {
+    if (!sheet.stack.length) return; // nothing to go back to
+    sheet.current = sheet.stack.pop();
+    paintSheet();
+  });
+  dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); }); // click on the dimmed backdrop
+  dlg.addEventListener("close", () => { destroyChart(); sheet.stack = []; sheet.current = null; });
+  document.addEventListener("click", (e) => {
+    const t = e.target.closest("[data-term]");
+    if (t) { openTerm(t.dataset.term); return; }
+    const b = e.target.closest("[data-sheet]");
+    if (b && SHEETS[b.dataset.sheet]) SHEETS[b.dataset.sheet]();
+  });
+}
+
+function openTerm(key) {
+  const g = GLOSSARY[key];
+  if (!g) return;
+  openSheet(g.title, `<p>${esc(g.body)}</p>${g.example ? `<div class="note"><span class="ms" aria-hidden="true">lightbulb</span><div>${esc(g.example)}</div></div>` : ""}`);
+}
+
+const range = (a, cls = "r") => {
+  const v = a.filter((x) => x != null).sort((x, y) => x - y);
+  if (!v.length) return "";
+  return v.length === 2 && Math.round(v[0]) !== Math.round(v[1])
+    ? `<span class="${cls}">${ils(v[0])}</span> <span class="to">עד</span> <span class="${cls}">${ils(v[1])}</span>`
+    : `<span class="${cls}">${ils(v[v.length - 1])}</span>`;
+};
+
+function verdictHTML(res) {
+  const m = res.market || {}, ctx = m.context || {}, c = res.calcs || {}, p = state.profile;
   const ids = (res.findings || []).map((f) => f.finding_id);
   if (res.status === "insufficient") {
-    parts.push(`<div class="rhero"><span class="pill pill-danger">אין די מידע להשוואה</span><p>${esc((m.messages || []).join(" "))}</p><p class="fine">ללא נתוני שוק עדכניים ואמינים, המערכת אינה מציגה סכומים או המלצות.</p></div>`);
-  } else if (ids.includes("F-no-gap")) {
-    parts.push(`<div class="rhero"><span class="pill pill-emerald">לא נמצא פער משמעותי בדמי הניהול</span><p>דמי הניהול שלך קרובים לממוצעים שנגבו בפועל בקרנות שנבדקו.</p></div>`);
-  } else {
-    const y1 = [c.median_y1?.value, c.alt1_y1?.value].filter((v) => v != null).sort((a, b) => a - b);
-    const g = [c.median_gap_central?.value, c.alt1_gap_central?.value].filter((v) => v != null).sort((a, b) => a - b);
-    const range = (a) => (a.length === 2 && Math.round(a[0]) !== Math.round(a[1])
-      ? `<span class="r">${ils(a[0])}</span> <span class="to">עד</span> <span class="r">${ils(a[1])}</span>` : `<span class="r">${ils(a[a.length - 1])}</span>`);
-    parts.push(`<div class="rhero">
-      <div class="row gap"><span class="pill pill-emerald"><span class="ms sm" aria-hidden="true">search_insights</span> זוהתה הזדמנות לבדיקה בדמי הניהול</span><span class="pill pill-amber">${CERT[2][0]}</span></div>
-      <div class="rhero-kpi"><div class="grow"><div class="k">חיסכון משוער בשנה הראשונה</div><div class="v">${range(y1)}</div></div><span class="ic ms" aria-hidden="true">trending_up</span></div>
-      <div class="rhero-kpi"><div class="grow"><div class="k">פער משוער בצבירה בגיל ${p.planned_retirement_age} (תרחיש מרכזי)</div><div class="v">${range(g)}</div></div><span class="ic ms" aria-hidden="true">savings</span></div>
-      <p class="fine">הטווח: מתנאים בגובה הקרן האמצעית בשוק ועד הקרן עם דמי הניהול הנמוכים ביותר עבורך, לפי הממוצעים שנגבו בפועל. זו הערכה לפי הנחות, לא הבטחה ולא הצעה.</p>
-    </div>`);
+    return `<div class="verdict"><span class="pill pill-danger">אין מספיק מידע להשוואה</span>
+      <h2>לא ניתן להשוות את דמי הניהול שלך לשוק</h2><p>${esc((m.messages || []).join(" "))}</p>
+      <p>בלי נתוני שוק עדכניים ואמינים, המערכת לא מציגה סכומים או המלצות.</p></div>`;
   }
-
-  // fee matrix
-  if (c.alt1_dep && res.status !== "insufficient") {
-    const fund = (res.findings.find((f) => f.finding_id === "F-switch-1")?.title || "").replace(/^לבחון מעבר ל/, "");
-    const delta = (cur, alt) => `${Math.round(((alt - cur) / cur) * 100)}%`;
-    parts.push(`<div class="card">
-      <div class="card-head"><span class="ms" aria-hidden="true">compare_arrows</span><h2 class="grow">דמי הניהול שלך מול השוק</h2><span class="pill pill-neutral">השוואת שוק</span></div>
-      <div class="matrix">
-        <div class="mcol"><div class="h">מצב נוכחי <span class="dot"></span></div>
-          <div class="mval"><div class="l">מצבירה</div><div class="v">${N(pct(p.accumulation_fee_pct))}</div></div>
-          <div class="mval"><div class="l">מהפקדה</div><div class="v">${N(pct(p.deposit_fee_pct))}</div></div>
-          <div class="foot">נתון פרופיל (הדגמה)</div></div>
-        <div class="mcol alt"><div class="h">ממוצע בקרן הזולה ביותר עבורך <span class="dot"></span></div>
-          <div class="mval"><div class="l">מצבירה</div><div class="v">${N(pct(c.alt1_acc.value))}<span class="delta">${delta(p.accumulation_fee_pct, c.alt1_acc.value)}</span></div></div>
-          <div class="mval"><div class="l">מהפקדה</div><div class="v">${N(pct(c.alt1_dep.value))}<span class="delta">${delta(p.deposit_fee_pct, c.alt1_dep.value)}</span></div></div>
-          <div class="foot">${esc(fund)} · ממוצע שנגבה בפועל, לא הצעה עבורך</div></div>
-      </div>
-      <div class="meta-box">
-        <div class="line"><span class="pill pill-amber">${CERT[2][0]}</span></div>
-        <div class="line"><span class="ms" aria-hidden="true">verified</span><div><b>מקור הנתונים:</b> פנסיה-נט, רשות שוק ההון (data.gov.il) · תקופת דיווח ${period(m.report_period)} · נאסף ${dateHe(m.collected_at)} · ${m.context?.funds_compared ?? "—"} קרנות מקיפות</div></div>
-        <div class="line"><span class="ms" aria-hidden="true">info</span><div>אלה ממוצעים שנגבו מכלל העמיתים בכל קרן. לא ידוע אם התנאים זמינים לך. כדי לדעת, צריך לבקש הצעה אישית מהקרן.</div></div>
-      </div>
-      ${allFundsBars(m, p)}
-    </div>`);
+  const n = ctx.funds_compared, k = ctx.funds_cheaper_than_you;
+  const noGap = ids.includes("F-no-gap") || ctx.verdict === "lower";
+  const avg = term("market_average", "ממוצע שנגבה בפועל");
+  let h, body, cls = "";
+  if (noGap) { cls = "good"; h = "לא נמצא פער משמעותי בדמי הניהול"; body = `דמי הניהול שלך קרובים ל${avg} בקרנות שבדקנו.`; }
+  else if (ctx.verdict === "higher_than_all") { h = "דמי הניהול שלך גבוהים מהממוצע בכל הקרנות שבדקנו"; body = `אילו היית משלם את ה${avg} בכל אחת מ-${n} הקרנות המקיפות שבדקנו, היית משלם פחות.`; }
+  else if (ctx.verdict === "higher_than_most") { h = "דמי הניהול שלך גבוהים מהממוצע ברוב הקרנות שבדקנו"; body = `${k} מתוך ${n} קרנות מקיפות גובות בממוצע פחות ממה שאתה משלם (${avg}).`; }
+  else { h = "דמי הניהול שלך באמצע השוק"; body = `רק ${k} מתוך ${n} קרנות מקיפות גובות בממוצע פחות ממה שאתה משלם (${avg}).`; }
+  const first = (res.findings || []).find((f) => f.finding_id !== "F-insufficient");
+  const cert = first ? CERT[first.certainty] : CERT[2];
+  const kpis = [];
+  if (c.cur_y1_total_fees) {
+    kpis.push(`<div class="kpi neutral"><div class="k">כמה דמי ניהול אתה משלם בשנה הקרובה, בערך</div><div class="v"><span class="r">${ils(c.cur_y1_total_fees.value)}</span></div>
+      <div class="why">${ils(c.cur_y1_dep_fees.value)} מההפקדות החודשיות ו-${ils(c.cur_y1_acc_fees.value)} מהחיסכון שנצבר</div></div>`);
   }
-
-  // scenarios
-  if (res.scenarios) {
-    const s = res.scenarios;
-    parts.push(`<div class="card" id="scen-card">
-      <div class="card-head"><span class="ms" aria-hidden="true">query_stats</span><div class="grow"><h2>שלושה תרחישים עד הפרישה (גיל ${p.planned_retirement_age})</h2><div class="sub">תנאים נוכחיים מול ממוצע ${esc(s.compared_fund)}</div></div></div>
-      <div class="seg" role="tablist">${s.items.map((i) => `<button role="tab" data-sc="${esc(i.scenario)}" class="${i.scenario === "central" ? "on" : ""}"><b>${esc(i.label)}</b>${(i.annual_real_return * 100).toFixed(1)}%</button>`).join("")}</div>
-      <div class="scen-panel" id="scen-panel"></div>
-      <div class="note"><span class="ms" aria-hidden="true">lock_clock</span><div>החישוב מתבצע בקוד, בסימולציה חודשית עם ריבית דריבית. התשואות הן <b>הנחות</b> ריאליות להמחשה (ממתינות לאישור), ולא תחזית. קצבה חודשית תחושב בשלב הבא.</div></div>
-    </div>`);
+  if (!noGap && c.median_y1) {
+    kpis.push(`<div class="kpi"><div class="k">כמה אפשר אולי לחסוך כבר בשנה הראשונה</div><div class="v">${range([c.median_y1?.value, c.alt1_y1?.value])}</div>
+      <div class="why">אם התנאים שלך היו כמו בקרן שבאמצע השוק, ועד הקרן הזולה ביותר עבורך</div></div>`);
+    kpis.push(`<div class="kpi"><div class="k">ומה זה אומר עד גיל ${p.planned_retirement_age}?</div><div class="v">${range([c.median_gap_central?.value, c.alt1_gap_central?.value])}</div>
+      <div class="why">תוספת אפשרית לחיסכון ביום הפרישה (תרחיש מרכזי, בערכים של היום)</div></div>`);
   }
+  return `<div class="verdict ${cls}">
+    <div class="row gap"><span class="pill ${cert[1]}">${cert[0]}</span>${term("certainty", "מה זה אומר?")}</div>
+    <h2>${h}</h2><p>${body}</p>
+    ${kpis.length ? `<div class="kpis">${kpis.join("")}</div>` : ""}
+    <p style="font-size:12.5px">אלה הערכות לפי הנחות, לא הבטחה ולא הצעה מהקרן. ${term("real_return", "מהן ההנחות?")}</p></div>`;
+}
 
-  // action plan
-  const plan = (res.findings || []).filter((f) => f.finding_id !== "F-insufficient");
-  if (plan.length) {
-    let n = 0;
-    const item = (f) => `<div class="plan-item ${esc(f.risk)}"><div class="top"><span class="n">${++n}</span><div class="grow"><h3>${esc(f.title)}</h3>
-      <div class="row gap" style="margin-top:6px"><span class="pill ${RISK[f.risk][1]}">${RISK[f.risk][0]}</span><span class="pill ${CERT[f.certainty][1]}">${CERT[f.certainty][0]}</span></div>
-      ${f.ranking_value_ils != null ? `<div class="val">פער משוער בצבירה בפרישה (תרחיש מרכזי): כ-${N(ils(f.ranking_value_ils))}</div>` : `<div class="val">ללא הערכה כספית</div>`}
-      <div class="why">${esc(f.next_step)}</div></div></div></div>`;
-    const low = plan.filter((f) => f.risk === "low"), high = plan.filter((f) => f.risk === "high");
-    parts.push(`<div class="card">
-      <div class="card-head"><span class="ms" aria-hidden="true">checklist_rtl</span><h2 class="grow">תוכנית פעולה מדורגת</h2><span class="sub small">לפי סיכון, ואז לפי תועלת</span></div>
-      ${low.length ? `<div class="plan-group-title"><span class="ms sm" aria-hidden="true">shield</span> קודם: פעולות בסיכון נמוך</div>${low.map(item).join("")}` : ""}
-      ${high.length ? `<div class="plan-group-title"><span class="ms sm" aria-hidden="true">warning</span> אחר כך: לבחון בזהירות</div>${high.map(item).join("")}` : ""}
-    </div>`);
+function nextStepHTML(res) {
+  const first = (res.findings || []).find((f) => f.finding_id !== "F-insufficient" && f.risk === "low");
+  if (!first) return "";
+  const noGap = first.finding_id === "F-no-gap";
+  return `<div class="card next-step">
+    <div class="card-head"><span class="icon-bubble emerald ms" aria-hidden="true">flag</span><h2 class="grow">${noGap ? "מה כדאי לעשות" : "הצעד הראשון שכדאי לעשות"}</h2></div>
+    <p><b>${esc(first.title)}</b></p><p>${esc(first.next_step)}</p>
+    <div class="row gap"><span class="pill ${RISK.low[1]}">${RISK.low[0]}</span>${term("risk_level", "מה זה סיכון נמוך?")}</div>
+    <button type="button" class="btn btn-ghost btn-block" data-sheet="steps">לכל הצעדים לפי סדר <span class="ms" aria-hidden="true">arrow_back</span></button></div>`;
+}
+
+function tilesHTML(res) {
+  const t = (k, icon, title, desc) => `<button type="button" class="tilebtn" data-sheet="${k}"><span class="icon-bubble ms" aria-hidden="true">${icon}</span><span><div class="t">${title}</div><div class="d">${desc}</div></span><span class="ms chev" aria-hidden="true">chevron_left</span></button>`;
+  const full = res.status !== "insufficient";
+  return `<div class="section-head"><h2>רוצה להבין יותר?</h2></div><div class="tilegrid">
+    ${full ? t("paying", "payments", "כמה אני משלם בשנה?", "הסבר פשוט עם דוגמאות") : ""}
+    ${full ? t("market", "compare_arrows", "איך אני מול השוק?", "הקרנות שבדקנו") : ""}
+    ${res.scenarios ? t("future", "query_stats", "מה זה אומר עד הפרישה?", "שלושה תרחישים וגרף") : ""}
+    ${full ? t("steps", "checklist_rtl", "כל הצעדים לפי סדר", "מה קודם, ומה לבחון בזהירות") : ""}
+    ${full ? t("facts", "fact_check", "הנתונים מאחורי הממצאים", "חישובים, הנחות ומגבלות") : ""}
+    ${t("sources", "policy", "מאיפה המידע?", "מקורות, ומה לא נבדק")}
+    ${t("glossary", "menu_book", "מילון מונחים", "הסברים במילים פשוטות")}</div>`;
+}
+
+function renderResults() {
+  const res = state.result, m = res.market || {};
+  const parts = [];
+  if (res.generated_by === "template") {
+    parts.push(`<div class="alert alert-info"><span class="ms" aria-hidden="true">info</span><div>הניסוח בדוח נוצר <b>מתבנית קבועה, לא על ידי מודל AI</b>. החישובים והדירוג נעשו בקוד.</div></div>`);
   }
-
-  // findings detail
-  parts.push(`<details class="disclosure"><summary><span class="ms" aria-hidden="true">fact_check</span> פירוט הממצאים: נתונים, חישובים והנחות<span class="ms chev" aria-hidden="true">expand_more</span></summary>
-    <div class="body"><div class="legend"><span class="f">עובדה: נתון מפרופיל או ממקור</span><span class="e">הערכה: חישוב לפי הנחות</span><span class="a">ניסוח: טקסט אוטומטי</span></div>
-    ${(res.findings || []).map((f) => findingCard(f, c)).join("")}</div></details>`);
-
-  // sources
-  parts.push(sourcesBlock());
-
-  // glossary
-  parts.push(`<details class="disclosure"><summary><span class="ms" aria-hidden="true">menu_book</span> מילון מונחים<span class="ms chev" aria-hidden="true">expand_more</span></summary>
-    <div class="body"><dl class="gloss">${GLOSSARY.map(([t, d]) => `<dt>${esc(t)}</dt><dd>${esc(d)}</dd>`).join("")}</dl></div></details>`);
-
+  if (m.last_refresh_failed) parts.push(`<div class="alert alert-warn"><span class="ms" aria-hidden="true">warning</span><div>${esc((m.messages || []).join(" "))}</div></div>`);
+  parts.push(verdictHTML(res), nextStepHTML(res), tilesHTML(res));
   parts.push(`<button class="btn btn-primary btn-block" data-goto="survey">מעבר לשאלון המשוב <span class="ms" aria-hidden="true">arrow_back</span></button>
     <p class="fine" style="text-align:center">אבטיפוס לימודי. ההמלצות מבוססות על נתוני הדגמה ועל נתוני שוק ציבוריים, ואינן ייעוץ פנסיוני אישי.</p>`);
-
   $("#results-empty").hidden = true;
   $("#results").innerHTML = parts.join("");
   bindDynamic($("#results"));
-  if (res.scenarios) {
-    renderScenario("central");
-    document.querySelectorAll("#scen-card .seg button").forEach((b) => b.addEventListener("click", () => {
-      document.querySelectorAll("#scen-card .seg button").forEach((x) => x.classList.toggle("on", x === b));
-      renderScenario(b.dataset.sc);
-      drawChart(b.dataset.sc);
-    }));
-  }
 }
+
+// ---- detail windows ----
+const SHEETS = {
+  paying() {
+    const c = state.result.calcs || {}, p = state.profile;
+    if (!c.cur_y1_total_fees) { openSheet("כמה אני משלם בשנה?", `<p>אין מספיק נתונים כדי לחשב.</p>`); return; }
+    openSheet("כמה אני משלם בשנה?", `
+      <p>קרן הפנסיה גובה ממך כסף על ניהול החיסכון שלך. יש שני סוגים של דמי ניהול, והם נגבים במקביל:</p>
+      <div class="tile tile-col"><div class="label">${term("deposit_fee", "דמי ניהול מהפקדות")} · אצלך ${pct(p.deposit_fee_pct)}</div>
+        <div>על כל 1,000 ₪ שמופקדים לפנסיה, <b>${ils(c.cur_dep_per_1000.value)}</b> הולכים לקרן.</div></div>
+      <div class="tile tile-col"><div class="label">${term("accumulation_fee", "דמי ניהול מצבירה")} · אצלך ${pct(p.accumulation_fee_pct)} בשנה</div>
+        <div>על כל 100,000 ₪ שכבר נצברו בחשבון, <b>${ils(c.cur_acc_per_100k.value)}</b> בשנה הולכים לקרן.</div></div>
+      <div class="big-example"><div class="label">בשנה הקרובה, בערך <span class="pill pill-neutral xs">הערכה</span></div>
+        <div class="line"><span>מההפקדות החודשיות</span>${N(ils(c.cur_y1_dep_fees.value))}</div>
+        <div class="line"><span>מהחיסכון שנצבר</span>${N(ils(c.cur_y1_acc_fees.value))}</div>
+        <div class="line"><span>סך הכול</span>${N(ils(c.cur_y1_total_fees.value))}</div></div>
+      <p class="fine">הערכה לפי ההנחות: הפקדה של ${(state.profile.derived?.contribution_rate * 100).toFixed(1)}% מהשכר ותשואה מרכזית. הסכום בפועל ישתנה עם השכר והתשואות.</p>
+      <div class="note"><span class="ms" aria-hidden="true">lightbulb</span><div>האחוזים נראים קטנים, אבל הם נגבים כל חודש ובכל שנה במשך עשרות שנים, ולכן ההפרש בין קרן יקרה לזולה מצטבר לסכום גדול.</div></div>`);
+  },
+
+  market() {
+    const res = state.result, c = res.calcs || {}, m = res.market || {}, p = state.profile;
+    if (!c.alt1_dep) { openSheet("איך אני מול השוק?", `<p>אין נתוני שוק להשוואה.</p>`); return; }
+    const fund = (res.findings.find((f) => f.finding_id === "F-switch-1")?.title || "").replace(/^לבחון מעבר ל/, "");
+    const delta = (cur, alt) => `${Math.round(((alt - cur) / cur) * 100)}%`;
+    openSheet("איך אני מול השוק?", `
+      <p>השוואנו את דמי הניהול שלך ל${term("market_average", "ממוצע שנגבה בפועל")} ב-${m.context?.funds_compared ?? "—"} ${term("comprehensive_fund", "קרנות פנסיה מקיפות")}.</p>
+      <div class="matrix">
+        <div class="mcol"><div class="h">מה שאתה משלם <span class="dot"></span></div>
+          <div class="mval"><div class="l">מצבירה</div><div class="v">${N(pct(p.accumulation_fee_pct))}</div></div>
+          <div class="mval"><div class="l">מהפקדה</div><div class="v">${N(pct(p.deposit_fee_pct))}</div></div>
+          <div class="foot">${state.source === "chat" ? "נתון שהזנת" : "נתון פרופיל (הדגמה)"}</div></div>
+        <div class="mcol alt"><div class="h">הקרן הזולה ביותר עבורך <span class="dot"></span></div>
+          <div class="mval"><div class="l">מצבירה</div><div class="v">${N(pct(c.alt1_acc.value))}<span class="delta">${delta(p.accumulation_fee_pct, c.alt1_acc.value)}</span></div></div>
+          <div class="mval"><div class="l">מהפקדה</div><div class="v">${N(pct(c.alt1_dep.value))}<span class="delta">${delta(p.deposit_fee_pct, c.alt1_dep.value)}</span></div></div>
+          <div class="foot">${esc(fund)}</div></div>
+      </div>
+      <div class="meta-box"><div class="line"><span class="ms" aria-hidden="true">info</span><div>אלה ממוצעים שנגבו מכלל העמיתים בקרן, <b>לא הצעה אישית</b>. לא ידוע אם התנאים האלה זמינים לך. כדי לדעת, צריך לבקש הצעה מהקרן.</div></div>
+        <div class="line"><span class="ms" aria-hidden="true">verified</span><div>מקור: ${term("pensia_net", "פנסיה-נט")} · תקופת דיווח ${period(m.report_period)} · נאסף ${dateHe(m.collected_at)}</div></div></div>
+      ${allFundsBars(m, p)}`);
+  },
+
+  future() {
+    const s = state.result.scenarios, p = state.profile;
+    if (!s) { openSheet("מה זה אומר עד הפרישה?", `<p>אין מספיק נתונים לתחזית.</p>`); return; }
+    openSheet(`מה זה אומר עד גיל ${p.planned_retirement_age}?`, `
+      <p>כך יכול להיראות החיסכון ביום הפרישה, אם תמשיך לשלם את דמי הניהול הנוכחיים, לעומת דמי ניהול בגובה הממוצע ב<b>${esc(s.compared_fund)}</b>. אף אחד לא יודע מה יהיו התשואות, ולכן יש שלושה תרחישים (${term("scenario", "מה זה תרחיש?")}).</p>
+      <div class="seg" role="tablist">${s.items.map((i) => `<button role="tab" data-sc="${esc(i.scenario)}" class="${i.scenario === "central" ? "on" : ""}"><b>${esc(i.label)}</b>${(i.annual_real_return * 100).toFixed(1)}%</button>`).join("")}</div>
+      <div class="scen-panel" id="scen-panel"></div>
+      <div class="note"><span class="ms" aria-hidden="true">lock_clock</span><div>הסכומים בכוח הקנייה של היום (${term("real_return", "תשואה ריאלית")}). התשואות הן <b>הנחות</b> להמחשה, לא תחזית ולא הבטחה. קצבה חודשית תחושב בשלב הבא.</div></div>`,
+      () => {
+        renderScenario("central");
+        document.querySelectorAll("#sheet-body .seg button").forEach((b) => b.addEventListener("click", () => {
+          document.querySelectorAll("#sheet-body .seg button").forEach((x) => x.classList.toggle("on", x === b));
+          renderScenario(b.dataset.sc);
+        }));
+      });
+  },
+
+  steps() {
+    const plan = (state.result.findings || []).filter((f) => f.finding_id !== "F-insufficient");
+    let n = 0;
+    const item = (f) => `<div class="plan-item ${esc(f.risk)}"><div class="top"><span class="n">${++n}</span><div class="grow"><h3>${esc(f.title)}</h3>
+      <div class="row gap" style="margin-top:6px"><span class="pill ${RISK[f.risk][1]}">${RISK[f.risk][0]}</span><span class="pill ${CERT[f.certainty][1]}">${CERT[f.certainty][0]}</span></div>
+      ${f.ranking_value_ils != null ? `<div class="val">פער משוער בפרישה (תרחיש מרכזי): כ-${N(ils(f.ranking_value_ils))}</div>` : `<div class="val">ללא הערכה כספית</div>`}
+      <div class="why">${esc(f.next_step)}</div></div></div></div>`;
+    const low = plan.filter((f) => f.risk === "low"), high = plan.filter((f) => f.risk === "high");
+    openSheet("כל הצעדים לפי סדר", `
+      <p>הצעדים מסודרים לפי ${term("risk_level", "רמת הסיכון")} של הפעולה: קודם מה שלא מסכן כלום, ורק אחר כך מה שדורש זהירות. בתוך כל קבוצה, הסדר הוא לפי הסכום האפשרי.</p>
+      ${low.length ? `<div class="plan-group-title"><span class="ms sm" aria-hidden="true">shield</span> קודם: פעולות בסיכון נמוך</div>${low.map(item).join("")}` : ""}
+      ${high.length ? `<div class="plan-group-title"><span class="ms sm" aria-hidden="true">warning</span> אחר כך: לבחון בזהירות</div>${high.map(item).join("")}` : ""}`);
+  },
+
+  facts() {
+    const res = state.result;
+    openSheet("הנתונים מאחורי הממצאים", `<p>כאן אפשר לבדוק מאיפה בא כל מספר: מה הוא עובדה, מה הערכה, ואיך חושב.</p>
+      <div class="legend"><span class="f">עובדה: נתון מפרופיל או ממקור</span><span class="e">הערכה: חישוב לפי הנחות</span><span class="a">ניסוח: טקסט אוטומטי</span></div>
+      ${(res.findings || []).map((f) => findingCard(f, res.calcs || {})).join("")}`);
+  },
+
+  sources() {
+    openSheet("מאיפה המידע?", sourcesInner(), loadAssumptions);
+  },
+
+  glossary() {
+    openSheet("מילון מונחים", `<dl class="gloss">${Object.entries(GLOSSARY).map(([, g]) => `<dt>${esc(g.title)}</dt><dd>${esc(g.body)}</dd>`).join("")}</dl>`);
+  },
+};
 
 function allFundsBars(m, p) {
   const funds = (m.funds || []).filter((f) => f.comparable);
@@ -404,8 +531,7 @@ function allFundsBars(m, p) {
     const max = Math.max(...rows.map((r) => r.v)) || 1;
     return `<div class="label mt">${title}</div><div class="bars">${rows.map((r) => `<div class="bar-row${r.me ? " me" : ""}"><span class="bar-name" title="${esc(r.name)}">${esc(r.name)}</span><span class="bar-track"><span class="bar-fill" style="width:${(r.v / max) * 100}%"></span></span><span class="bar-val">${pct(r.v)}</span></div>`).join("")}</div>`;
   };
-  return `<details class="disclosure" style="box-shadow:none"><summary><span class="ms" aria-hidden="true">bar_chart</span> השוואה לכל ${funds.length} הקרנות<span class="ms chev" aria-hidden="true">expand_more</span></summary>
-    <div class="body">${block("דמי ניהול מהפקדה – ממוצע בפועל", "deposit_fee_pct", p.deposit_fee_pct)}${block("דמי ניהול מצבירה – ממוצע בפועל", "accumulation_fee_pct", p.accumulation_fee_pct)}</div></details>`;
+  return `<h3>כל ${funds.length} הקרנות</h3>${block("דמי ניהול מהפקדה (ממוצע בפועל)", "deposit_fee_pct", p.deposit_fee_pct)}${block("דמי ניהול מצבירה (ממוצע בפועל)", "accumulation_fee_pct", p.accumulation_fee_pct)}`;
 }
 
 function renderScenario(name) {
@@ -413,25 +539,24 @@ function renderScenario(name) {
   $("#scen-panel").innerHTML = `
     <div class="row between"><h3>תרחיש ${esc(it.label)}</h3><span class="pill pill-neutral">תשואה ריאלית ${(it.annual_real_return * 100).toFixed(1)}% (הנחה)</span></div>
     <div class="scen-kpis">
-      <div><div class="k">צבירה משוערת בפרישה – תנאים נוכחיים</div>${N(ils(it.current_final))}</div>
-      <div class="gain"><div class="k">תוספת משוערת אילו קיבלת תנאים בגובה הממוצע</div>כ-${N(ils(it.gap))}</div>
+      <div><div class="k">הצבירה בפרישה עם התנאים שלך היום</div>${N(ils(it.current_final))}</div>
+      <div class="gain"><div class="k">תוספת אפשרית אם דמי הניהול היו כמו הממוצע</div>כ-${N(ils(it.gap))}</div>
     </div>
     <div class="chart-box"><canvas id="chart" aria-label="גרף צבירה לפי גיל"></canvas></div>`;
-  if (state.chart) { state.chart.destroy(); state.chart = null; }
-  if (!$("#screen-results").hidden) drawChart(name);
+  drawChart(name);
 }
 
 function drawChart(name) {
   const s = state.result?.scenarios;
   const cv = $("#chart");
   if (!s || !cv) return;
-  if (!window.Chart) { cv.parentElement.innerHTML = '<p class="sub">הגרף לא נטען. הנתונים מופיעים למעלה.</p>'; return; }
+  if (!window.Chart) { cv.parentElement.innerHTML = '<p class="sub">הגרף לא נטען. הנתונים מופיעים בכרטיסים.</p>'; return; }
   const it = s.items.find((i) => i.scenario === name);
-  if (state.chart) state.chart.destroy();
+  destroyChart();
   state.chart = new Chart(cv, {
     type: "line",
     data: { labels: it.current_yearly.map((_, k) => s.start_age + k + 1), datasets: [
-      { label: "תנאים נוכחיים", data: it.current_yearly, borderColor: "#64748b", backgroundColor: "#64748b", pointRadius: 0, borderWidth: 2 },
+      { label: "התנאים שלך היום", data: it.current_yearly, borderColor: "#64748b", backgroundColor: "#64748b", pointRadius: 0, borderWidth: 2 },
       { label: `ממוצע ${s.compared_fund}`, data: it.alternative_yearly, borderColor: "#059669", backgroundColor: "rgba(5,150,105,.08)", fill: "-1", pointRadius: 0, borderWidth: 2.5 },
     ] },
     options: {
@@ -450,7 +575,7 @@ function findingCard(f, calcs) {
   const facts = refs.filter((x) => x.kind === "fact"), ests = refs.filter((x) => x.kind === "estimate");
   const src = f.source_refs.length
     ? f.source_refs.map((s) => (s === "pensianet_2024_now" ? '<li><a href="https://data.gov.il/dataset/pensia-net" target="_blank" rel="noopener">פנסיה-נט – רשות שוק ההון (data.gov.il)</a></li>' : `<li>${esc(s)}</li>`)).join("")
-    : "<li>נתוני פרופיל ההדגמה בלבד</li>";
+    : "<li>הנתונים שבפרופיל בלבד</li>";
   return `<div class="finding"><h3>${esc(f.title)}</h3>
     <div class="tags"><span class="pill ${CERT[f.certainty][1]}">${CERT[f.certainty][0]}</span><span class="pill ${RISK[f.risk][1]}">${RISK[f.risk][0]}</span><span class="pill pill-sky">${f.generated_by === "template" ? "ניסוח: תבנית, לא AI" : "ניסוח: מודל AI"}</span></div>
     ${facts.length ? `<div class="blk fact"><div class="lbl">עובדות</div>${kv(facts)}</div>` : ""}
@@ -464,7 +589,7 @@ function findingCard(f, calcs) {
 
 const VSTATUS = { verified: ["אומת", "pill-emerald"], partial: ["אומת חלקית", "pill-amber"], not_checked: ["לא נבדק", "pill-amber"], failed: ["נכשל", "pill-danger"] };
 
-function sourcesBlock() {
+function sourcesInner() {
   const man = state.sources?.manifest || {};
   const snap = state.sources?.snapshot;
   const last = man.last_attempt;
@@ -478,16 +603,14 @@ function sourcesBlock() {
       ${s.coverage ? `<div class="sub">כיסוי: ${esc(s.coverage)}</div>` : ""}
       ${(s.known_limitations || []).length ? `<ul class="mini-list">${s.known_limitations.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>` : ""}</div>`;
   }).join("");
-  return `<details class="disclosure"><summary><span class="ms" aria-hidden="true">policy</span> אסמכתאות, הנחות ומגבלות הניתוח<span class="ms chev" aria-hidden="true">expand_more</span></summary>
-    <div class="body">
-      <div class="meta-box"><div class="line"><span class="ms" aria-hidden="true">database</span><div><b>מצב מאגר נתוני השוק:</b> רענון אחרון ${dateHe(last?.at)}: ${last?.status === "success" ? "הצליח" : `<b style="color:var(--danger)">נכשל</b> (${esc(last?.error)})`}.
-        ${cov ? ` נכללו ${cov.funds_comparable} קרנות מקיפות ו-${cov.tracks_included} מסלולים, תקופה ${period(snap.latest_report_period)}. ${esc(cov.note)}` : ""}</div></div>
-        ${rejected.length ? `<div class="line"><span class="ms" aria-hidden="true">filter_alt_off</span><div>${rejected.length} מסלולים לא נכללו (לא דווחו בתקופה האחרונה או חסרים בהם נתונים).</div></div>` : ""}</div>
-      ${srcs}
-      <div class="label mt">הנחות החישוב</div><div id="assumptions-table" class="table-wrap"><p class="sub">טוען…</p></div>
-      <div class="label mt">מה לא נבדק בגרסה זו</div>
-      <ul class="mini-list"><li>כיסוי ביטוחי (נכות ושארים), והשלכות של מעבר קרן עליו.</li><li>חישוב קצבה חודשית.</li><li>תשואות, שירות ואיתנות של הקרנות.</li><li>הצעות אישיות של קרנות וזכאות של עידו לתנאים.</li></ul>
-    </div></details>`;
+  return `
+    <div class="meta-box"><div class="line"><span class="ms" aria-hidden="true">database</span><div><b>מצב מאגר נתוני השוק:</b> רענון אחרון ${dateHe(last?.at)}: ${last?.status === "success" ? "הצליח" : `<b style="color:var(--danger)">נכשל</b> (${esc(last?.error)})`}.
+      ${cov ? ` נכללו ${cov.funds_comparable} קרנות מקיפות ו-${cov.tracks_included} מסלולים, תקופה ${period(snap.latest_report_period)}. ${esc(cov.note)}` : ""}</div></div>
+      ${rejected.length ? `<div class="line"><span class="ms" aria-hidden="true">filter_alt_off</span><div>${rejected.length} מסלולים לא נכללו (לא דווחו בתקופה האחרונה או חסרים בהם נתונים).</div></div>` : ""}</div>
+    ${srcs}
+    <h3>הנחות החישוב</h3><div id="assumptions-table" class="table-wrap"><p class="sub">טוען…</p></div>
+    <h3>מה לא נבדק בגרסה זו</h3>
+    <ul class="mini-list"><li>כיסוי ביטוחי (נכות ושארים), והשלכות של מעבר קרן עליו.</li><li>חישוב קצבה חודשית.</li><li>תשואות, שירות ואיתנות של הקרנות.</li><li>הצעות אישיות של קרנות וזכאות לתנאים מסוימים.</li></ul>`;
 }
 
 async function loadAssumptions() {
@@ -547,6 +670,7 @@ function bindDynamic(root) {
 document.addEventListener("DOMContentLoaded", () => {
   bindDynamic(document);
   bindChat();
+  bindSheet();
   $("#btn-connect").addEventListener("click", connect);
   $("#btn-analyze").addEventListener("click", analyze);
   go("entry");
