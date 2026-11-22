@@ -162,11 +162,11 @@
         </div>
         <div class="grid2">
           <div class="tile tile-col">
-            <div class="label"><span class="ms sm" aria-hidden="true">percent</span> <abbr class="term" title="אחוז שנתי שהקרן גובה מכל הכסף שכבר נצבר בחשבון.">דמי ניהול מצבירה</abbr></div>
+            <div class="label"><span class="ms sm" aria-hidden="true">percent</span> <button type="button" class="term" data-term="accumulation_fee">דמי ניהול מצבירה</button></div>
             <div><span class="num xl" id="p-acc"></span> <span class="sub">לשנה</span></div>
           </div>
           <div class="tile tile-col">
-            <div class="label"><span class="ms sm" aria-hidden="true">trending_up</span> <abbr class="term" title="אחוז שהקרן גובה מכל הפקדה חודשית, לפני שהכסף נכנס לחיסכון.">דמי ניהול מהפקדות</abbr></div>
+            <div class="label"><span class="ms sm" aria-hidden="true">trending_up</span> <button type="button" class="term" data-term="deposit_fee">דמי ניהול מהפקדות</button></div>
             <div><span class="num xl" id="p-dep"></span> <span class="sub">מכל הפקדה</span></div>
           </div>
         </div>
@@ -216,6 +216,16 @@
       <form id="survey-form" class="survey"></form>
     </section>
   </main>
+
+  <!-- Detail window: bottom sheet on phones, centered dialog on larger screens. -->
+  <dialog id="sheet" class="sheet" aria-labelledby="sheet-title">
+    <div class="sheet-head">
+      <button type="button" class="sheet-back" id="sheet-back" aria-label="חזרה" hidden><span class="ms flip" aria-hidden="true">arrow_back</span></button>
+      <h2 id="sheet-title"></h2>
+      <button type="button" class="sheet-close" id="sheet-close" aria-label="סגירה"><span class="ms" aria-hidden="true">close</span></button>
+    </div>
+    <div class="sheet-body" id="sheet-body"></div>
+  </dialog>
 
   <nav class="bottomnav" aria-label="ניווט ראשי">
     <button data-goto="entry" class="on"><span class="ms" aria-hidden="true">login</span><span>כניסה</span></button>
