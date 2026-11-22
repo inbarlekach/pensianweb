@@ -3,7 +3,16 @@
 פרויקט אוניברסיטאי: דמו Web בעברית (RTL) שמשווה את דמי הניהול של פרופיל פיקטיבי (עידו) לנתוני שוק אמיתיים ומחשב את ההשפעה הכספית עד הפרישה. **ה-MVP כולל דמי ניהול בלבד.** כיסוי ביטוחי וחישוב קצבה שייכים לשלב הבא.
 
 ## הרצה
-- Python 3.12, ב-venv מקומי: `.venv\Scripts\python.exe`. Node ו-git אינם מותקנים.
+- Python 3.12, ב-venv מקומי: `.venv\Scripts\python.exe`. Node אינו מותקן.
+- git מותקן אך לא ב-PATH: `C:\Program Files\Git\cmd\git.exe`. ‏GitHub CLI: `C:\Program Files\GitHub CLI\gh.exe` (מחובר כ-`inbarlekach`).
+
+## תהליך עבודה עם git (מחייב)
+- ריפוזיטורי: `inbarlekach/pensianweb` (ציבורי). ענפים קבועים: `main` ו-`dev`.
+- **כל משימה חדשה מתחילה בענף חדש שמפוצל מ-`dev`**, בשם כמו `feat/...`, `fix/...` או `docs/...`. לא עובדים ישירות על `dev` או על `main`.
+- בסיום המשימה: מריצים את הבדיקות מקומית (`pytest`), ובמקרה של שינוי בממשק גם בודקים בדפדפן.
+- רק אחרי בדיקה מקומית מוצלחת ממזגים את הענף ל-`dev`.
+- ממזגים מ-`dev` ל-`main` רק כשהמשתמשת מאשרת, אחרי בדיקה מקומית נוספת על `dev`.
+- לא דוחפים, לא ממזגים ולא מוחקים ענפים בלי בקשה מפורשת.
 - התקנה: `.venv\Scripts\python -m pip install -r requirements.txt`
 - בדיקות: `.venv\Scripts\python -m pytest -q`
 - שרת: `.venv\Scripts\python -m uvicorn app.main:app --port 8000`, או `pension-demo` ב-`.claude/launch.json`.
