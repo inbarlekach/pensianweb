@@ -208,6 +208,42 @@ function bindChat() {
   });
 }
 
+// ---------------- avatar (נשמר רק בדפדפן) ----------------
+const AVATAR_KEY = "pension-avatar";
+function showAvatar(url) {
+  $("#avatar-img").hidden = !url;
+  if (url) $("#avatar-img").src = url;
+  $("#avatar-remove").hidden = !url;
+}
+function initAvatar() {
+  try { showAvatar(localStorage.getItem(AVATAR_KEY)); } catch { showAvatar(null); }
+  $("#avatar-btn").addEventListener("click", () => $("#avatar-file").click());
+  $("#avatar-remove").addEventListener("click", () => {
+    try { localStorage.removeItem(AVATAR_KEY); } catch {}
+    $("#avatar-file").value = "";
+    showAvatar(null);
+  });
+  $("#avatar-file").addEventListener("change", (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    if (!f.type.startsWith("image/")) { alert("יש לבחור קובץ תמונה."); return; }
+    const img = new Image();
+    const src = URL.createObjectURL(f);
+    img.onload = () => {
+      const S = 256, c = document.createElement("canvas");
+      c.width = c.height = S;
+      const m = Math.min(img.width, img.height);
+      c.getContext("2d").drawImage(img, (img.width - m) / 2, (img.height - m) / 2, m, m, 0, 0, S, S);
+      URL.revokeObjectURL(src);
+      const url = c.toDataURL("image/jpeg", 0.85);
+      try { localStorage.setItem(AVATAR_KEY, url); } catch {}
+      showAvatar(url);
+    };
+    img.onerror = () => { URL.revokeObjectURL(src); alert("לא ניתן לקרוא את התמונה."); };
+    img.src = src;
+  });
+}
+
 // ---------------- 2. profile ----------------
 function renderProfile() {
   const p = state.profile;
@@ -549,6 +585,7 @@ document.addEventListener("DOMContentLoaded", () => {
   bindChat();
   $("#btn-connect").addEventListener("click", connect);
   $("#btn-analyze").addEventListener("click", analyze);
+  initAvatar();
   go("entry");
   getJSON("/api/sources").then((s) => { state.sources = state.sources || s; }).catch(() => {});
   const saved = load();
