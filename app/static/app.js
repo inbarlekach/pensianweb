@@ -146,14 +146,14 @@ function setStatus(key, done, text, pillText, pillCls) {
 async function connect() {
   const btn = $("#btn-connect");
   btn.disabled = true;
-  btn.innerHTML = '<span class="ms" aria-hidden="true">progress_activity</span> טוען…';
+  btn.innerHTML = 'טוען… <span class="ms" aria-hidden="true">progress_activity</span>';
   const t0 = Date.now();
   let demo;
   try {
     [demo, state.sources] = await Promise.all([getJSON("/api/profile"), getJSON("/api/sources")]);
   } catch (e) {
     btn.disabled = false;
-    btn.innerHTML = '<span class="ms" aria-hidden="true">sync</span> נסה שוב';
+    btn.innerHTML = 'נסה שוב <span class="ms" aria-hidden="true">sync</span>';
     setStatus("profile", false, null, "נכשל", "pill-danger");
     return;
   }
@@ -171,7 +171,7 @@ async function connect() {
     setStatus("market", false, "נתוני שוק: לא נמצא מאגר מקומי", "חסר", "pill-danger");
   }
   btn.disabled = false;
-  btn.innerHTML = '<span class="ms" aria-hidden="true">check</span> נטען – לטעינה מחדש לחץ שוב';
+  btn.innerHTML = 'נטען – לטעינה מחדש לחץ שוב <span class="ms" aria-hidden="true">check</span>';
   await applyProfile(demo, "demo");
 }
 
