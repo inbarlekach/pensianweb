@@ -4,6 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>בודק דמי ניהול – אבטיפוס</title>
+  <script>
+    /* Apply the saved (or system) theme before first paint to avoid a light flash. */
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem("pension-theme"); } catch (e) {}
+      if (t !== "dark" && t !== "light") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap">
@@ -22,7 +31,12 @@
           <div class="brand-sub" id="appbar-sub">כניסה</div>
         </div>
       </div>
-      <span class="pill pill-proto">אבטיפוס לימודי</span>
+      <div class="appbar-end">
+        <span class="pill pill-proto">אבטיפוס לימודי</span>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="מעבר למצב כהה" title="מעבר למצב כהה">
+          <span class="ms" aria-hidden="true">dark_mode</span>
+        </button>
+      </div>
     </div>
   </header>
 

@@ -34,6 +34,65 @@
   --sh-2: 0 10px 15px -3px rgba(15, 23, 42, .06), 0 4px 6px -4px rgba(15, 23, 42, .03);
   --sh-ai: 0 0 0 1px #0284c7, 0 4px 12px rgba(2, 132, 199, .12);
 }
+:root { color-scheme: light; }
+
+/* Dark theme: same tokens, dark values. Set by the toggle (html[data-theme="dark"]). */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --navy: #334155;
+  --navy-2: #475569;
+  --ink: #e6edf7;
+  --ink-2: #b4c0d3;
+  --muted: #94a3b8;
+  --canvas: #0b1220;
+  --surface: #131c2e;
+  --tile: #172238;
+  --tile-2: #1d2b46;
+  --line: #26344d;
+  --line-2: #3a4b6c;
+  --emerald: #34d399;
+  --emerald-ink: #6ee7b7;
+  --emerald-bg: #0c2a22;
+  --emerald-line: #14573f;
+  --sky: #38bdf8;
+  --sky-ink: #7dd3fc;
+  --sky-bg: #0c2236;
+  --sky-line: #155e86;
+  --amber: #fbbf24;
+  --amber-ink: #fcd34d;
+  --amber-bg: #2a2008;
+  --amber-line: #6b4e0f;
+  --danger: #f87171;
+  --danger-ink: #fecaca;
+  --danger-bg: #3a1517;
+  --sh-1: 0 1px 3px 0 rgba(0, 0, 0, .35);
+  --sh-2: 0 10px 15px -3px rgba(0, 0, 0, .4), 0 4px 6px -4px rgba(0, 0, 0, .3);
+  --sh-ai: 0 0 0 1px #38bdf8, 0 4px 12px rgba(56, 189, 248, .15);
+}
+:root[data-theme="dark"] .appbar { background: rgba(19, 28, 46, .92); }
+:root[data-theme="dark"] .bottomnav { background: rgba(19, 28, 46, .96); }
+:root[data-theme="dark"] .pill-proto { background: #0c2a22; }
+:root[data-theme="dark"] .pill-danger,
+:root[data-theme="dark"] .card-danger,
+:root[data-theme="dark"] .msg.err { border-color: #7f2a2d; }
+:root[data-theme="dark"] .card-soft { border-color: var(--line-2); }
+:root[data-theme="dark"] .icon-bubble.danger { background: #5a1f22; }
+:root[data-theme="dark"] .hero { background: linear-gradient(135deg, #14243f 0%, #0f2a3d 55%, #0e2e2a 100%); }
+:root[data-theme="dark"] .mcol.alt { background: #0e2b24; }
+:root[data-theme="dark"] .delta { background: #14573f; color: #a7f3d0; }
+:root[data-theme="dark"] .bar-fill { background: #3b82f6; opacity: .75; }
+:root[data-theme="dark"] .scen-panel { background: var(--tile); }
+:root[data-theme="dark"] .btn-ai { background: #0369a1; }
+:root[data-theme="dark"] .scale input:checked + span { color: #04231a; }
+:root[data-theme="dark"] .btn:focus-visible,
+:root[data-theme="dark"] .chip:focus-visible { outline-color: #38bdf8; }
+
+/* Theme toggle */
+.appbar-end { display: flex; align-items: center; gap: 8px; }
+.theme-toggle { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; border: 1px solid var(--line-2); background: var(--surface); color: var(--ink); cursor: pointer; padding: 0; }
+.theme-toggle:hover { background: var(--tile); }
+.theme-toggle:focus-visible { outline: 3px solid #7dd3fc; outline-offset: 2px; }
+
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; }

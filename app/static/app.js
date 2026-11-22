@@ -45,6 +45,25 @@ async function getJSON(url, opts) {
   return body;
 }
 
+// ---------------- theme (light / dark) ----------------
+// The initial theme is applied by an inline script in index.html; this only handles the toggle.
+function currentTheme() { return document.documentElement.dataset.theme === "dark" ? "dark" : "light"; }
+function applyTheme(t, { persist = true } = {}) {
+  document.documentElement.dataset.theme = t;
+  if (persist) { try { localStorage.setItem("pension-theme", t); } catch { /* storage unavailable: theme applies for this page view */ } }
+  const btn = $("#theme-toggle");
+  if (btn) {
+    const dark = t === "dark";
+    btn.setAttribute("aria-pressed", String(dark));
+    const label = dark ? "מעבר למצב בהיר" : "מעבר למצב כהה";
+    btn.setAttribute("aria-label", label);
+    btn.title = label;
+    btn.querySelector(".ms").textContent = dark ? "light_mode" : "dark_mode";
+  }
+  const on = document.querySelector("#scen-card .seg .on");
+  if (state.chart && on) drawChart(on.dataset.sc);   // chart colours are read from the theme tokens
+}
+
 // ---------------- navigation ----------------
 function go(name) {
   if (!state.unlocked.has(name)) return;
@@ -428,6 +447,9 @@ function drawChart(name) {
   if (!window.Chart) { cv.parentElement.innerHTML = '<p class="sub">הגרף לא נטען. הנתונים מופיעים למעלה.</p>'; return; }
   const it = s.items.find((i) => i.scenario === name);
   if (state.chart) state.chart.destroy();
+  const css = getComputedStyle(document.documentElement);
+  Chart.defaults.color = css.getPropertyValue("--muted").trim() || "#64748b";
+  Chart.defaults.borderColor = css.getPropertyValue("--line").trim() || "#e2e8f0";
   state.chart = new Chart(cv, {
     type: "line",
     data: { labels: it.current_yearly.map((_, k) => s.start_age + k + 1), datasets: [
@@ -546,6 +568,8 @@ function bindDynamic(root) {
 
 document.addEventListener("DOMContentLoaded", () => {
   bindDynamic(document);
+  applyTheme(currentTheme(), { persist: false });
+  $("#theme-toggle").addEventListener("click", () => applyTheme(currentTheme() === "dark" ? "light" : "dark"));
   bindChat();
   $("#btn-connect").addEventListener("click", connect);
   $("#btn-analyze").addEventListener("click", analyze);
